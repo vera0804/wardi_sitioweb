@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wardi-dark: #1b4332;
+  --color-wardi-darker: #0d2818;
+  --color-wardi-avocado: #7cb342;
+  --color-wardi-avocado-light: #9ccc65;
+  --color-wardi-coffee: #6f4e37;
+  --color-wardi-coffee-soft: #a67c52;
+  --color-wardi-cream: #f5f0e8;
+  --color-wardi-beige: #e8dfd0;
+  --color-wardi-soft-black: #1a1a1a;
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-wardi-soft-black);
+  background-color: var(--color-wardi-cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-wardi-avocado) 40%, transparent);
+  color: var(--color-wardi-darker);
+}

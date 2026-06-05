@@ -2,12 +2,18 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Icon } from '../../utils/icons'
 
+const CROPS = [
+  { value: 'cafe', label: 'Café', icon: 'Coffee' },
+  { value: 'aguacate', label: 'Aguacate', icon: 'Sprout' },
+]
+
 const INITIAL = {
   clientName: '',
   adminEmail: '',
   firstName: '',
   firstLastName: '',
   secondLastName: '',
+  crop: '',
 }
 
 export function DemoModal({ open, onClose }) {
@@ -27,10 +33,18 @@ export function DemoModal({ open, onClose }) {
     }, 300)
   }
 
+  const setCrop = (value) => setForm((prev) => ({ ...prev, crop: value }))
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus('loading')
     setErrorMsg('')
+
+    if (!form.crop) {
+      setStatus('error')
+      setErrorMsg('Seleccione su cultivo: Café o Aguacate.')
+      return
+    }
 
     try {
       const res = await fetch('/api/demo', {
@@ -135,6 +149,36 @@ export function DemoModal({ open, onClose }) {
                   onChange={update('adminEmail')}
                   required
                 />
+
+                <fieldset>
+                  <legend className="block text-sm font-medium text-wardi-soft-black">
+                    Cultivo
+                  </legend>
+                  <p className="mt-0.5 text-xs text-wardi-soft-black/45">
+                    Indique el cultivo principal de su finca
+                  </p>
+                  <div className="mt-2 grid grid-cols-2 gap-3">
+                    {CROPS.map((crop) => {
+                      const selected = form.crop === crop.value
+                      return (
+                        <button
+                          key={crop.value}
+                          type="button"
+                          onClick={() => setCrop(crop.value)}
+                          className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition ${
+                            selected
+                              ? 'border-wardi-avocado bg-wardi-avocado/15 text-wardi-dark ring-2 ring-wardi-avocado/25'
+                              : 'border-wardi-dark/10 bg-wardi-cream/50 text-wardi-soft-black hover:border-wardi-avocado/40'
+                          }`}
+                          aria-pressed={selected}
+                        >
+                          <Icon name={crop.icon} size={18} />
+                          {crop.label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </fieldset>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field
                     label="Nombre"

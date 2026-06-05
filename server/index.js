@@ -44,7 +44,11 @@ app.post('/api/demo', async (req, res) => {
       firstName,
       firstLastName,
       secondLastName = '',
+      crop,
     } = req.body
+
+    const cropLabels = { cafe: 'Café', aguacate: 'Aguacate' }
+    const cropValue = crop?.trim().toLowerCase()
 
     if (!clientName?.trim()) {
       return res.status(400).json({ error: 'El nombre del cliente es obligatorio.' })
@@ -57,6 +61,9 @@ app.post('/api/demo', async (req, res) => {
     }
     if (!firstLastName?.trim()) {
       return res.status(400).json({ error: 'El primer apellido es obligatorio.' })
+    }
+    if (!cropValue || !cropLabels[cropValue]) {
+      return res.status(400).json({ error: 'Seleccione un cultivo válido: Café o Aguacate.' })
     }
 
     const contactName = [firstName, firstLastName, secondLastName]
@@ -73,6 +80,7 @@ app.post('/api/demo', async (req, res) => {
         <h2>Nueva solicitud de demo — Wardi Agrícola</h2>
         <table style="border-collapse:collapse;font-family:sans-serif;font-size:14px;">
           <tr><td style="padding:8px 16px 8px 0;font-weight:600;">Cliente / Finca / Organización</td><td style="padding:8px 0;">${escapeHtml(clientName.trim())}</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;font-weight:600;">Cultivo</td><td style="padding:8px 0;">${escapeHtml(cropLabels[cropValue])}</td></tr>
           <tr><td style="padding:8px 16px 8px 0;font-weight:600;">Correo del administrador</td><td style="padding:8px 0;"><a href="mailto:${escapeHtml(adminEmail.trim())}">${escapeHtml(adminEmail.trim())}</a></td></tr>
           <tr><td style="padding:8px 16px 8px 0;font-weight:600;">Nombre completo</td><td style="padding:8px 0;">${escapeHtml(contactName)}</td></tr>
           <tr><td style="padding:8px 16px 8px 0;font-weight:600;">Nombre</td><td style="padding:8px 0;">${escapeHtml(firstName.trim())}</td></tr>
